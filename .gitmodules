@@ -1,0 +1,3 @@
+[submodule "marquez"]
+	path = marquez
+	url = https://github.com/MarquezProject/marquez
