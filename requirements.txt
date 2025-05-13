@@ -1,1 +1,10 @@
 # Astro Runtime includes the following pre-installed providers packages: https://www.astronomer.io/docs/astro/runtime-image-architecture#provider-packages
+apache-airflow-providers-openlineage==2.2.0
+apache-airflow-providers-postgres
+apache-airflow-providers-common-sql>=1.23.0
+apache-airflow-providers-common-compat>=1.4.0
+attrs>=22.2
+openlineage-integration-common>=1.31.0
+openlineage-python>=1.31.0
+psycopg2-binary>=2.9.9
+asyncpg>=0.30.0
