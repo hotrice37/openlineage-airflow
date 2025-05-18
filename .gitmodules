@@ -1,3 +1,6 @@
 [submodule "marquez"]
 	path = marquez
 	url = https://github.com/MarquezProject/marquez
+[submodule "datahub"]
+	path = datahub
+	url = https://github.com/datahub-project/datahub
