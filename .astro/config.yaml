@@ -1,2 +1,4 @@
 project:
     name: openlineage
+webserver:
+    port: "8090"
