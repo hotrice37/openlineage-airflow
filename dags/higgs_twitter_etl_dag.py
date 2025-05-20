@@ -226,6 +226,11 @@ convert_to_parquet = SparkSubmitOperator(
     name="higgs_parquet_conversion",
     trigger_rule="none_failed",  # Run this task when all direct upstream tasks have succeeded or been skipped
     verbose=True,
+    conf={
+        "spark.jars.packages": "io.acryl:acryl-spark-lineage:0.2.17",
+        "spark.extraListeners": "datahub.spark.DatahubSparkListener",
+        "spark.datahub.rest.server": "http://host.docker.internal:8080",
+    },
     dag=dag,
 )
 
@@ -242,6 +247,11 @@ run_analysis = SparkSubmitOperator(
     name="higgs_analysis",
     on_execute_callback=None,  # No special pre-execution actions
     verbose=True,
+    conf={
+        "spark.jars.packages": "io.acryl:acryl-spark-lineage:0.2.17",
+        "spark.extraListeners": "datahub.spark.DatahubSparkListener",
+        "spark.datahub.rest.server": "http://host.docker.internal:8080",
+    },
     dag=dag,
 )
 
