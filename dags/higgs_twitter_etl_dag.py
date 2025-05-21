@@ -227,9 +227,11 @@ convert_to_parquet = SparkSubmitOperator(
     trigger_rule="none_failed",  # Run this task when all direct upstream tasks have succeeded or been skipped
     verbose=True,
     conf={
-        "spark.jars.packages": "io.acryl:acryl-spark-lineage:0.2.17",
-        "spark.extraListeners": "datahub.spark.DatahubSparkListener",
-        "spark.datahub.rest.server": "http://host.docker.internal:8080",
+        "spark.jars.packages": "io.openlineage:openlineage-spark_2.12:1.32.0",
+        "spark.extraListeners": "io.openlineage.spark.agent.OpenLineageSparkListener",
+        "spark.openlineage.transport.url": "http://host.docker.internal:8080/openapi/openlineage/api/v1/lineage",
+        "spark.openlineage.transport.type": "http",
+        "spark.openlineage.namespace": "datahub_spark_integration"
     },
     dag=dag,
 )
@@ -248,9 +250,11 @@ run_analysis = SparkSubmitOperator(
     on_execute_callback=None,  # No special pre-execution actions
     verbose=True,
     conf={
-        "spark.jars.packages": "io.acryl:acryl-spark-lineage:0.2.17",
-        "spark.extraListeners": "datahub.spark.DatahubSparkListener",
-        "spark.datahub.rest.server": "http://host.docker.internal:8080",
+        "spark.jars.packages": "io.openlineage:openlineage-spark_2.12:1.32.0",
+        "spark.extraListeners": "io.openlineage.spark.agent.OpenLineageSparkListener",
+        "spark.openlineage.transport.url": "http://host.docker.internal:8080/openapi/openlineage/api/v1/lineage",
+        "spark.openlineage.transport.type": "http",
+        "spark.openlineage.namespace": "datahub_spark_integration"
     },
     dag=dag,
 )
