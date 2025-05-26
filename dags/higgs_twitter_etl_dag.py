@@ -226,13 +226,31 @@ convert_to_parquet = SparkSubmitOperator(
     name="higgs_parquet_conversion",
     trigger_rule="none_failed",  # Run this task when all direct upstream tasks have succeeded or been skipped
     verbose=True,
+    jars="./include/jars/atlas-openlineage-transport_2.12-1.0.jar",
     conf={
-        "spark.jars.packages": "io.openlineage:openlineage-spark_2.12:1.32.0",
+
+        # "spark.jars": "./include/jars/atlas-openlineage-transport_2.12-1.0.jar",
+        "spark.jars.packages": "io.openlineage:openlineage-spark_2.12:1.32.0,org.apache.httpcomponents:httpclient:4.5.14,com.fasterxml.jackson.core:jackson-databind:2.12.7",
         "spark.extraListeners": "io.openlineage.spark.agent.OpenLineageSparkListener",
-        "spark.openlineage.transport.url": "http://host.docker.internal:8080",
-        "spark.openlineage.transport.endpoint": "/openapi/openlineage/api/v1/lineage",
-        "spark.openlineage.transport.type": "http",
-        "spark.openlineage.namespace": "datahub_spark_integration"
+        "spark.openlineage.transport.type": "custom",
+        "spark.openlineage.transport.http.enabled": "false",
+        "spark.openlineage.transport.class": "com.example.openlineage.AtlasLineageTransport",
+        "spark.openlineage.transport.url": "http://host.docker.internal:21000/api/atlas/v2",
+        "spark.openlineage.transport.username": "admin",
+        "spark.openlineage.transport.password": "atlasR0cks!",
+        "spark.openlineage.namespace": "atlas_spark_integration",
+        "spark.openlineage.metrics.enabled": "false",
+        "spark.openlineage.host": "",
+        "spark.driver.extraJavaOptions": "-Dlog4j.configuration=./include/config/log4j.properties -Dlog4j.debug=true -XX:+PrintClassPath",
+        "spark.executor.extraJavaOptions": "-Dlog4j.configuration=./include/config/log4j.properties -Dlog4j.debug=true -XX:+PrintClassPath"
+
+
+        # "spark.jars.packages": "io.openlineage:openlineage-spark_2.12:1.32.0",
+        # "spark.extraListeners": "io.openlineage.spark.agent.OpenLineageSparkListener",
+        # "spark.openlineage.transport.url": "http://host.docker.internal:8080",
+        # "spark.openlineage.transport.endpoint": "/openapi/openlineage/api/v1/lineage",
+        # "spark.openlineage.transport.type": "http",
+        # "spark.openlineage.namespace": "datahub_spark_integration"
     },
     dag=dag,
 )
@@ -250,13 +268,23 @@ run_analysis = SparkSubmitOperator(
     name="higgs_analysis",
     on_execute_callback=None,  # No special pre-execution actions
     verbose=True,
+    jars="./include/jars/atlas-openlineage-transport_2.12-1.0.jar",
     conf={
-        "spark.jars.packages": "io.openlineage:openlineage-spark_2.12:1.32.0",
+
+        # "spark.jars": "./include/jars/atlas-openlineage-transport_2.12-1.0.jar",
+        "spark.jars.packages": "io.openlineage:openlineage-spark_2.12:1.32.0,org.apache.httpcomponents:httpclient:4.5.14,com.fasterxml.jackson.core:jackson-databind:2.12.7",
         "spark.extraListeners": "io.openlineage.spark.agent.OpenLineageSparkListener",
-        "spark.openlineage.transport.url": "http://host.docker.internal:8080",
-        "spark.openlineage.transport.endpoint": "/openapi/openlineage/api/v1/lineage",
-        "spark.openlineage.transport.type": "http",
-        "spark.openlineage.namespace": "datahub_spark_integration"
+        "spark.openlineage.transport.type": "custom",
+        "spark.openlineage.transport.http.enabled": "false",
+        "spark.openlineage.transport.class": "com.example.openlineage.AtlasLineageTransport",
+        "spark.openlineage.transport.url": "http://host.docker.internal:21000/api/atlas/v2",
+        "spark.openlineage.transport.username": "admin",
+        "spark.openlineage.transport.password": "atlasR0cks!",
+        "spark.openlineage.namespace": "atlas_spark_integration",
+        "spark.openlineage.metrics.enabled": "false",
+        "spark.openlineage.host": "",
+        "spark.driver.extraJavaOptions": "-Dlog4j.configuration=./include/config/log4j.properties -Dlog4j.debug=true -XX:+PrintClassPath",
+        "spark.executor.extraJavaOptions": "-Dlog4j.configuration=./include/config/log4j.properties -Dlog4j.debug=true -XX:+PrintClassPath"
     },
     dag=dag,
 )

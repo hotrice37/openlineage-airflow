@@ -4,16 +4,19 @@ services:
     networks:
       - default # Keeps the service connected to Astro's internal default network
       - shared-network
+      - atlasnw
 
   webserver: # Astro CLI's default webserver service name
     networks:
       - default
       - shared-network
+      - atlasnw
 
   triggerer: # Astro CLI's default triggerer service name
     networks:
       - default
       - shared-network
+      - atlasnw
 
   spark-master:
     image: bitnami/spark:latest
@@ -90,3 +93,6 @@ networks:
   shared-network:
     external: true
     name: shared-network
+  atlasnw:
+    external: true
+    name: atlasnw
