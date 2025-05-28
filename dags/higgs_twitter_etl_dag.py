@@ -229,18 +229,10 @@ convert_to_parquet = SparkSubmitOperator(
     conf={
         "spark.jars.packages": "io.openlineage:openlineage-spark_2.12:1.32.0",
         "spark.extraListeners": "io.openlineage.spark.agent.OpenLineageSparkListener",
-        "spark.openlineage.transport.type": "kafka",
-        "spark.openlineage.transport.topic": "openlineage",
-        "spark.openlineage.transport.properties": {
-            "bootstrap.servers": "host.docker.internal:9599",
-            # "key.serializer": "org.apache.kafka.common.serialization.StringSerializer",
-            # "value.serializer": "org.apache.kafka.common.serialization.StringSerializer"
-            },  # Use your Kafka service hostname:port
-
-        # "spark.openlineage.transport.url": "http://host.docker.internal:8080",
-        # "spark.openlineage.transport.endpoint": "/openapi/openlineage/api/v1/lineage",
-        # "spark.openlineage.transport.type": "http",
-        "spark.openlineage.namespace": "kafka_spark_integration"
+        "spark.openlineage.transport.url": "http://host.docker.internal:8080",
+        "spark.openlineage.transport.endpoint": "/openapi/openlineage/api/v1/lineage",
+        "spark.openlineage.transport.type": "http",
+        "spark.openlineage.namespace": "datahub_spark_integration"
     },
     dag=dag,
 )
@@ -261,17 +253,9 @@ run_analysis = SparkSubmitOperator(
     conf={
         "spark.jars.packages": "io.openlineage:openlineage-spark_2.12:1.32.0",
         "spark.extraListeners": "io.openlineage.spark.agent.OpenLineageSparkListener",
-        "spark.openlineage.transport.type": "kafka",
-        "spark.openlineage.transport.topicName": "openlineage",
-        "spark.openlineage.transport.properties": {
-            "bootstrap.servers": "host.docker.internal:9599",
-            # "key.serializer": "org.apache.kafka.common.serialization.StringSerializer",
-            # "value.serializer": "org.apache.kafka.common.serialization.StringSerializer"
-            },
-
-        # "spark.openlineage.transport.url": "http://host.docker.internal:8080",
-        # "spark.openlineage.transport.endpoint": "/openapi/openlineage/api/v1/lineage",
-        # "spark.openlineage.transport.type": "http",
+        "spark.openlineage.transport.url": "http://host.docker.internal:8080",
+        "spark.openlineage.transport.endpoint": "/openapi/openlineage/api/v1/lineage",
+        "spark.openlineage.transport.type": "http",
         "spark.openlineage.namespace": "datahub_spark_integration"
     },
     dag=dag,

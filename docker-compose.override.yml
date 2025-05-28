@@ -80,33 +80,6 @@ services:
       - hadoop-namenode
     networks:
       - airflow
-
-
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.5.0
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 22181
-      ZOOKEEPER_TICK_TIME: 2000
-    networks:
-      - airflow
-      - shared-network
-
-  kafka:
-    image: confluentinc/cp-kafka:7.5.0
-    ports:
-      - "9599:9092"  # Expose Kafka outside as port 9599 → internal port 9092
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:22181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:9599
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    depends_on:
-      - zookeeper
-    networks:
-      - airflow
-      - shared-network
   
 volumes:
   spark-data:
