@@ -1,5 +1,8 @@
 # Astro Runtime includes the following pre-installed providers packages: https://www.astronomer.io/docs/astro/runtime-image-architecture#provider-packages
-apache-airflow-providers-openlineage==2.3.0
+# apache-airflow-providers-openlineage==2.3.0
+atlasclient>=1.0.0
+apache-atlas
+apache-airflow[apache.atlas]
 apache-airflow-providers-postgres
 apache-airflow-providers-common-sql>=1.23.0
 apache-airflow-providers-common-compat>=1.5.0
@@ -17,3 +20,11 @@ methodtools>=0.4.7
 # apache-airflow-providers-apache-hdfs==4.9.0
 # hdfs[avro,dataframe,kerberos]>=2.5.4
 # pandas<2.2
+
+
+# apache-airflow-providers-apache-hive>=6.0.0
+apache-airflow-providers-apache-hdfs>=4.9.0
+# hdfs3>=0.3.1
+# pandas<2.2
+
+requests>=2.25.0
