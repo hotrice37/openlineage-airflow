@@ -29,6 +29,19 @@ dag = DAG(
     }
 )
 
+OPENLINEAGE_CONFIG= {
+    "spark.jars.packages": "io.openlineage:openlineage-spark_2.12:1.32.0",
+    "spark.extraListeners": "io.openlineage.spark.agent.OpenLineageSparkListener",
+    "spark.openlineage.transport.type": "composite",
+    "spark.openlineage.transport.transports.datahub.type": "http",
+    "spark.openlineage.transport.transports.datahub.url": "http://host.docker.internal:8080",
+    "spark.openlineage.transport.transports.datahub.endpoint": "/openapi/openlineage/api/v1/lineage",
+    "spark.openlineage.transport.transports.marquez.type": "http",
+    "spark.openlineage.transport.transports.marquez.url": "http://host.docker.internal:5000",
+    "spark.openlineage.transport.transports.marquez.endpoint": "api/v1/lineage",
+    "spark.openlineage.namespace": "datahub_spark_integration"
+}
+
 # Dataset information
 dataset_files = [
     "higgs-activity_time.txt.gz",
@@ -226,14 +239,7 @@ convert_to_parquet = SparkSubmitOperator(
     name="higgs_parquet_conversion",
     trigger_rule="none_failed",  # Run this task when all direct upstream tasks have succeeded or been skipped
     verbose=True,
-    conf={
-        "spark.jars.packages": "io.openlineage:openlineage-spark_2.12:1.32.0",
-        "spark.extraListeners": "io.openlineage.spark.agent.OpenLineageSparkListener",
-        "spark.openlineage.transport.url": "http://host.docker.internal:8080",
-        "spark.openlineage.transport.endpoint": "/openapi/openlineage/api/v1/lineage",
-        "spark.openlineage.transport.type": "http",
-        "spark.openlineage.namespace": "datahub_spark_integration"
-    },
+    conf=OPENLINEAGE_CONFIG,
     dag=dag,
 )
 
@@ -250,14 +256,7 @@ run_analysis = SparkSubmitOperator(
     name="higgs_analysis",
     on_execute_callback=None,  # No special pre-execution actions
     verbose=True,
-    conf={
-        "spark.jars.packages": "io.openlineage:openlineage-spark_2.12:1.32.0",
-        "spark.extraListeners": "io.openlineage.spark.agent.OpenLineageSparkListener",
-        "spark.openlineage.transport.url": "http://host.docker.internal:8080",
-        "spark.openlineage.transport.endpoint": "/openapi/openlineage/api/v1/lineage",
-        "spark.openlineage.transport.type": "http",
-        "spark.openlineage.namespace": "datahub_spark_integration"
-    },
+    conf=OPENLINEAGE_CONFIG,
     dag=dag,
 )
 

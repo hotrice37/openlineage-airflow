@@ -3,9 +3,47 @@ PySpark script to convert Higgs Twitter dataset files to Parquet format.
 This script automates the conversion process demonstrated in the ETL-download.ipynb notebook.
 """
 
+import time
+import logging
 from pyspark.sql import SparkSession
 from pyspark.sql.types import *
 import subprocess
+
+
+# Add performance monitoring
+class SparkJobMonitor:
+    def __init__(self, spark_session):
+        self.spark = spark_session
+        self.start_time = None
+        self.metrics = {}
+    
+    def start_job(self, job_name):
+        self.start_time = time.time()
+        self.job_name = job_name
+        logging.info(f"Starting job {job_name} at {self.start_time}")
+    
+    def end_job(self):
+        end_time = time.time()
+        duration = end_time - self.start_time
+        self.metrics['job_duration'] = duration
+        logging.info(f"Job {self.job_name} completed in {duration:.2f} seconds")
+        return duration
+    
+    def log_stage_metrics(self):
+        """Log Spark stage metrics for overhead calculation"""
+        try:
+            sc = self.spark.sparkContext
+            status_tracker = sc.statusTracker()
+            
+            # Get job info
+            job_ids = status_tracker.getJobIds()
+            for job_id in job_ids:
+                job_info = status_tracker.getJobInfo(job_id)
+                if job_info:
+                    logging.info(f"Job {job_id}: Status={job_info.status}, Stages={len(job_info.stageIds)}")
+                    
+        except Exception as e:
+            logging.error(f"Error getting stage metrics: {e}")
 
 def main():
     # Create a SparkSession
